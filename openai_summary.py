@@ -20,7 +20,8 @@ with open('extracted_articles.json', 'r', encoding='utf-8') as f:
 json_string = json.dumps(articles, indent=4)
 
 # Define the prompt for summarization
-prompt = f"Please summarize the following articles:\n\n{json_string}"
+prompt = f"Please provide a detailed summary of the following articles. Include key insights, main points, and any significant details.The total summary should be at least 1500 words:\n\n{json_string}"
+
 
 # Call the OpenAI API for summarization using the ChatCompletion method for gpt-4-turbo
 response = openai.chat.completions.create(
@@ -29,9 +30,16 @@ response = openai.chat.completions.create(
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": prompt}
     ],
-    max_tokens=2500,  # Adjust token limit as needed
+    max_tokens=3500,  # Adjust token limit as needed
     temperature=0.5
 )
 
 # Print the response object type and attributes to understand its structure
-print(response)
+content = response.choices[0].message.content
+print(content)
+
+# Save the summary to a text file
+with open('summary.txt', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print("Summary has been saved to 'summary.txt'")
