@@ -1,27 +1,19 @@
-from dotenv import load_dotenv
-import openai
-import json
-import os
-import requests
+prompt = f"""
+Hello, curious readers! Let's dive into a story-like summary of the latest SEO news and articles. For each article, include the following:
 
-# Load environment variables from .env file
-load_dotenv()
+1. **Engaging Start**: Begin with a catchy and engaging introduction to draw readers in.
+2. **Narrative Flow**: Present the key points and insights in a story-like manner, making the content engaging and easy to follow.
+3. **SEO Keywords**: Naturally integrate relevant SEO keywords throughout the content.
+4. **Clear Structure**: Use headings and bullet points where appropriate to enhance readability.
+5. **Conclusion**: End with a summarizing remark or call to action.
 
-# Set API keys from environment variables
-openai.api_key = os.getenv("OPENAI_API_KEY")
-elevenlabs_api_key = os.getenv("ELEVENLABS_API_KEY")
+Please ensure the entire summary is at least 1500 words and maintains an engaging, informative tone throughout.
 
-# Set the model name, default to gpt-4-turbo if not set
-model_name = os.getenv("OPENAI_MODEL_NAME", "gpt-4-turbo")
+Here are the articles:
 
-# Read JSON data from file
-with open('extracted_articles.json', 'r', encoding='utf-8') as f:
-    articles = json.load(f)
+{json_string}
+"""
 
-# Convert JSON data to a string
-json_string = json.dumps(articles, indent=4)
-
-# Define the prompt for summarization
 prompt = """
 You are a skilled content writer with a talent for crafting engaging stories. Your task is to write a detailed, story-like summary of the following SEO articles. Make the summary engaging, informative, and structured in a narrative format. The total summary should be at least 1500 words.
 
@@ -57,31 +49,3 @@ You are a skilled content writer with a talent for crafting engaging stories. Yo
 
 Blend detailed insights with a captivating narrative and compelling headers to ensure the summary is both informative and engaging.
 """
-
-
-
-
-# Call the OpenAI API for summarization using the ChatCompletion method for gpt-4-turbo
-response = openai.chat.completions.create(
-    model=model_name,
-    messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": prompt}
-    ],
-    max_tokens=3500,  # Adjust token limit as needed
-    temperature=0.5
-)
-
-# Extract the response content
-content =  response.choices[0].message.content
-print(content)
-
-# Save the summary to a text file
-with open('seo3.txt', 'w', encoding='utf-8') as f:
-    f.write(content)
-
-print("Summary has been saved to 'seo3.txt'")
-
-# Text-to-Speech conversion using ElevenLabs
-
-# Import necessary librari
