@@ -3,23 +3,25 @@ import json  # Used for working with JSON data
 
 # Define constants for the script
 CHUNK_SIZE = 1024  # Size of chunks to read/write at a time
-XI_API_KEY = "sk_07dec3cc34500635abd3951e1ec30d53cffbb73dce811b98"  # Your API key for authentication
+# XI_API_KEY = "sk_07dec3cc34500635abd3951e1ec30d53cffbb73dce811b98"  # Your API key for authentication
 VOICE_ID = "pNInz6obpgDQGcFmaJgB"  # ID of the voice model to use
-TEXT_TO_SPEAK = "Namkha is a good boy"  # Text you want to convert to speech
-OUTPUT_PATH = "output.mp3"  # Path to save the output audio file
+INPUT_PATH = "main.txt"  # Text you want to convert to speech
+OUTPUT_PATH = "seo2.mp3"  # Path to save the output audio file
 
 # Construct the URL for the Text-to-Speech API request
 tts_url = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}/stream"
+with open(INPUT_PATH, 'r', encoding='utf-8') as f:
+    main_text = f.read()
 
 # Set up headers for the API request, including the API key for authentication
 headers = {
     "Accept": "application/json",
-    "xi-api-key": XI_API_KEY
+    # "xi-api-key": XI_API_KEY
 }
 
 # Set up the data payload for the API request, including the text and voice settings
 data = {
-    "text": TEXT_TO_SPEAK,
+    "text": main_text,
     "model_id": "eleven_multilingual_v2",
     "voice_settings": {
         "stability": 0.5,
